@@ -7,10 +7,12 @@
     <div class="calculadora mt-5 p-3 rounded-5">
       <header>
         <h1 class="title text-start">Calculadora</h1>
-        <div class="visor text-end">
-          <h1 class="visor-operacao">110+100</h1>
-          <h2 class="visor-resultado" >200</h2>
+        <div class="row justify-content-end visor">
+          <div class="col-2"><h1 class="visor-operacao">110</h1></div>
+          <div class="col-1"><h1 class="visor-operacao">+</h1></div>
+          <div class="col-3"><h1 class="visor-operacao">100</h1></div>
         </div>
+        <h2 class="visor-resultado text-end" >210</h2>
       </header>
       <div class="container">
         <div class="row g-2 botoes">
@@ -72,13 +74,15 @@
 }
 
 .visor-operacao {
+  border: none;
+  background-color: transparent;
   color: #fff;
   font-size: 2rem;
 }
 
 .visor-resultado {
   color: #737eac;
-  font-size: 1rem;
+  font-size: 1.6rem;
   margin-bottom: 150px;
 }
 
