@@ -181,8 +181,16 @@ function calcular() {
 .visor-operacao {
   border: none;
   background-color: transparent;
+  border: none;
+  background-color: transparent;
   color: #fff;
   font-size: 2rem;
+  min-height: 250px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow-x: auto;
   min-height: 250px;
 
   display: flex;
@@ -193,6 +201,7 @@ function calcular() {
 
 .visor-resultado {
   color: #737eac;
+  font-size: 1.6rem;
   font-size: 1.6rem;
   margin-bottom: 150px;
 }
