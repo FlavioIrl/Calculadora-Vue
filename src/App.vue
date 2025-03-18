@@ -1,5 +1,6 @@
 <script setup>
 import { computed, reactive } from 'vue'
+import Visor from './components/Visor.vue'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const estado = reactive({
@@ -88,13 +89,7 @@ function calcular() {
   <div class="fundo">
     <div class="container">
       <div class="calculadora mt-1 p-3 rounded-5">
-        <header>
-          <h1 class="title text-start">Calculadora</h1>
-          <div class="row text-end visor-operacao visor">
-            <h1>{{ visor }}</h1>
-            <h2 class="visor-resultado text-end">{{ resultado }}</h2>
-          </div>
-        </header>
+        <Visor :resultado="resultado" :visor="visor"/>
         <div class="container">
           <div class="row g-2 botoes">
             <div class="col-6"><i @click="apagarUltimo" class="bi bi-backspace btn btn-letra w-100 "></i></div>
