@@ -8,7 +8,53 @@ const estado = reactive ({
   resultado: '',
  })
 
+ function apagarOp() {
+  if (estado.segundoNumero !== '') {
+    estado.segundoNumero = estado.segundoNumero.slice(0, -1)
+  } else if (estado.operador !== '') {
+    estado.operador = ''
+  } else if (estado.primeiroNumero !== '') {
+    estado.primeiroNumero = estado.primeiroNumero.slice(0, -1)
+  }
+  // estado.primeiroNumero = ''
+  // estado.operador = ''
+ }
+ const visor = computed(()=> {
+  return `${estado.primeiroNumero}${estado.operador}${estado.segundoNumero}`
+ })
 
+ const resultado = computed(() => {
+   const number1 = parseFloat(estado.primeiroNumero);
+   const number2 = parseFloat(estado.segundoNumero);
+
+  if (isNaN(number1) || isNaN(number2) || estado.operador === '') return ''
+
+  switch (estado.operador) {
+    case '+': 
+      return number1 + number2
+    case '-':
+      return number1 - number2
+    case 'x':
+      return number1 * number2
+    case '/':  
+      return number2 !== 0 ? number1 / number2:
+      'Erro'
+    default:
+      return ''
+    }
+ })
+ 
+ function clickVirgula() {
+  if(estado.operador === '') {
+      if (! estado.primeiroNumero.includes(',')) {
+        estado.primeiroNumero += ','
+      }
+    }else {
+    if(! estado.segundoNumero.includes(',')) {
+      estado.segundoNumero += ','
+      }
+    }
+  }
  function clickNumero(number) {
   if (estado.operador === '') {
     estado.primeiroNumero += number
@@ -23,48 +69,21 @@ const estado = reactive ({
   }
  }
 
- const resultado = computed(() => {
-   const number1 = parseFloat(estado.primeiroNumero);
-   const number2 = parseFloat(estado.segundoNumero);
-
-  if (isNaN(number1) || isNaN(number2) || estado.operador === '') return ''
-
-  switch (estado.operador) {
-    case '+': 
-      res = number1 = number2
-    break
-    case '-':
-      res = number1 - number2
-      break
-    case 'x':
-      res = number1 * number2
-      break
-    case '/':  
-      res = number2 !== 0 ? number1 / number2:
-      'Erro'
-      break
-    default:
-      res = 'Erro'
-    }
-
-     estado.resultado = res
-    // estado.primeiroNumero = res.toString()
-    // estado.operador = ''
-    // estado.segundoNumero = ''
-    // estado.resultado = ''
- })
- function limpar() {
+ function limparC() {
   estado.primeiroNumero = ''
   estado.segundoNumero = ''
   estado.operador = ''
   estado.resultado = ''
+
  }
 
- const visor = computed(()=> {
-  return `${estado.primeiroNumero}${estado.operador}${estado.segundoNumero}`
- })
-
-
+ function calcular() {
+  if (resultado.value !== '') {
+    estado.primeiroNumero = resultado.value.toString()
+    estado.segundoNumero = ''
+    estado.operador = '' 
+  }
+ }
 </script> 
 
 <template>
@@ -79,8 +98,8 @@ const estado = reactive ({
       </header>
       <div class="container">
         <div class="row g-2 botoes">
-          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="limpar">CE</button></div>
-          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="limpar">C</button></div>
+          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="apagarOp">CE</button></div>
+          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="limparC">C</button></div>
           <div class="col-3"><button class="btn w-100 rounded-pill">%</button></div>
           <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('/')">/</button></div>
           
@@ -95,8 +114,8 @@ const estado = reactive ({
           <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('+')">+</button></div>
           
           <div class="col-6 "><button class="btn w-100 btn-zero rounded-pill" @click="clickNumero(0)">0</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">,</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click="calculadora">=</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click="clickVirgula">,</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click="calcular">=</button></div>
         </div>
       </div>
     </div>
@@ -123,9 +142,9 @@ const estado = reactive ({
 }
 
 .calculadora {
-  background-image: linear-gradient(to bottom , #3a2d68 30%, #2f155e);
+  background-image: linear-gradient(to bottom , #28166b 20%, #0c0720);
   font-family: "Rubik", sans-serif;
-  border: 10px solid rgb(51, 32, 66);
+  border: 10px solid rgb(16, 8, 22);
   max-width: 360px;
   margin: 0 auto;
   padding: 20px;
