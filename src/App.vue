@@ -1,44 +1,102 @@
 <script setup>
+import { computed, reactive } from 'vue'
 
-</script>
+const estado = reactive ({
+  primeiroNumero: '',
+  segundoNumero: '',
+  operador: '',
+  resultado: '',
+ })
+
+
+ function clickNumero(number) {
+  if (estado.operador === '') {
+    estado.primeiroNumero += number
+  } else {
+    estado.segundoNumero += number
+  }
+ }
+
+ function clickOperador(op) {
+  if (estado.primeiroNumero !== '') {
+    estado.operador = op
+  }
+ }
+
+ const resultado = computed(() => {
+   const number1 = parseFloat(estado.primeiroNumero);
+   const number2 = parseFloat(estado.segundoNumero);
+
+  if (isNaN(number1) || isNaN(number2) || estado.operador === '') return ''
+
+  switch (estado.operador) {
+    case '+': 
+      res = number1 = number2
+    break
+    case '-':
+      res = number1 - number2
+      break
+    case 'x':
+      res = number1 * number2
+      break
+    case '/':  
+      res = number2 !== 0 ? number1 / number2:
+      'Erro'
+      break
+    default:
+      res = 'Erro'
+    }
+
+     estado.resultado = res
+    // estado.primeiroNumero = res.toString()
+    // estado.operador = ''
+    // estado.segundoNumero = ''
+    // estado.resultado = ''
+ })
+ function limpar() {
+  estado.primeiroNumero = ''
+  estado.segundoNumero = ''
+  estado.operador = ''
+  estado.resultado = ''
+ }
+
+ const visor = computed(()=> {
+  return `${estado.primeiroNumero}${estado.operador}${estado.segundoNumero}`
+ })
+
+
+</script> 
 
 <template>
   <div class="container">
     <div class="calculadora mt-5 p-3 rounded-5">
       <header>
         <h1 class="title text-start">Calculadora</h1>
-        <div class="row justify-content-end visor">
-          <div class="col-2"><h1 class="visor-operacao">110</h1></div>
-          <div class="col-1"><h1 class="visor-operacao">+</h1></div>
-          <div class="col-3"><h1 class="visor-operacao">100</h1></div>
+        <div class="row text-end visor-operacao visor">
+          <h1 >{{  visor }}</h1>
+          <h2 class="visor-resultado text-end" >{{ resultado }}</h2>
         </div>
-        <h2 class="visor-resultado text-end" >210</h2>
       </header>
       <div class="container">
         <div class="row g-2 botoes">
-          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill">CE</button></div>
-          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill">C</button></div>
+          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="limpar">CE</button></div>
+          <div class="col-3"><button class="btn btn-letra w-100 rounded-pill" @click="limpar">C</button></div>
           <div class="col-3"><button class="btn w-100 rounded-pill">%</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">/</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('/')">/</button></div>
           
-          <div class="col-3"><button class="btn w-100 rounded-pill">7</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">8</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">9</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">X</button></div>
+          <div class="col-3" v-for="n in ['7', '8', '9']" key="n"><button class="btn w-100 rounded-pill" @click="clickNumero(n)">{{ n }}</button></div>
+
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('x')">X</button></div>
           
-          <div class="col-3"><button class="btn w-100 rounded-pill">4</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">5</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">6</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">-</button></div>
+          <div class="col-3" v-for="n in ['4', '5', '6']" key="n"><button class="btn w-100 rounded-pill" @click="clickNumero(n)">{{ n }}</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('-')" >-</button></div>
           
-          <div class="col-3"><button class="btn w-100 rounded-pill">1</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">2</button></div>
-          <div class="col-3"><button class="btn w-100 rounded-pill">3</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">+</button></div>
+          <div class="col-3" v-for="n in ['1', '2', '3']" key="n"><button class="btn w-100 rounded-pill" @click="clickNumero(n)">{{ n }}</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click= "clickOperador('+')">+</button></div>
           
-          <div class="col-6 "><button class="btn w-100 btn-zero rounded-pill">0</button></div>
+          <div class="col-6 "><button class="btn w-100 btn-zero rounded-pill" @click="clickNumero(0)">0</button></div>
           <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">,</button></div>
-          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill">=</button></div>
+          <div class="col-3"><button class="btn btn-sinais w-100 rounded-pill" @click="calculadora">=</button></div>
         </div>
       </div>
     </div>
@@ -78,6 +136,12 @@
   background-color: transparent;
   color: #fff;
   font-size: 2rem;
+  min-height: 250px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow-x: auto;
 }
 
 .visor-resultado {
