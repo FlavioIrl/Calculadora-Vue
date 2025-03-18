@@ -1,8 +1,5 @@
 <script setup>
-    const props = defineProps({
-    resultado: String,
-    visor: String
-    })
+    const props = defineProps([ 'resultado', 'visor'])
 </script>
 
 <template>

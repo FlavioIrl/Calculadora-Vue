@@ -1,14 +1,14 @@
 <script setup>  
-    const props = defineProps([
-    'apagarTudo',
-    'apagarUltimo',
-    'clickOperador',
-    'ErroOuInvalido',
-    'calcular',
-    'clickNumero',
-    'clickVirgula',
-    'resultado',
-  ])
+    const props = defineProps({
+    apagarTudo: Function,
+    apagarUltimo: Function,
+    clickOperador: Function,
+    ErroOuInvalido: Function,
+    calcular: Function,
+    clickNumero: Function,
+    clickVirgula: Function,
+    resultado: String,
+    })
 </script>
 
 <template>
@@ -50,7 +50,6 @@
 </template>
 
 <style scoped>
-
 .btn:hover {
   background-color: #5a22d3;
   transform: scale(1.1);

@@ -1,6 +1,7 @@
 <script setup>
 import { computed, reactive } from 'vue'
 import Visor from './components/Visor.vue'
+import Botoes from './components/Botoes.vue'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const estado = reactive({
@@ -90,41 +91,14 @@ function calcular() {
     <div class="container">
       <div class="calculadora mt-1 p-3 rounded-5">
         <Visor :resultado="resultado" :visor="visor"/>
-        <div class="container">
-          <div class="row g-2 botoes">
-            <div class="col-6"><i @click="apagarUltimo" class="bi bi-backspace btn btn-letra w-100 "></i></div>
-            <div class="col-3"><button class="btn btn-letra w-100 " @click="apagarTudo">C</button></div>
-            <div class="col-3"><button class="btn btn-sinais w-100 " @click="clickOperador('/')" :disabled="ErroOuInvalido(resultado)">/</button>
-            </div>
-
-            <div class="col-3" v-for="n in ['7', '8', '9']" :key="n">
-              <button class="btn w-100 " @click="clickNumero(n)" :disabled="ErroOuInvalido(resultado)">{{ n }}</button>
-            </div>
-
-            <div class="col-3">
-              <button class="btn btn-sinais w-100 " @click="clickOperador('x')" :disabled="ErroOuInvalido(resultado)">X</button>
-            </div>
-
-            <div class="col-3" v-for="n in ['4', '5', '6']" :key="n">
-              <button class="btn w-100" @click="clickNumero(n)" :disabled="ErroOuInvalido(resultado)">{{ n }}</button>
-            </div>
-            <div class="col-3">
-              <button class="btn btn-sinais w-100 " @click="clickOperador('-')" :disabled="ErroOuInvalido(resultado)">-</button>
-            </div>
-
-            <div class="col-3" v-for="n in ['1', '2', '3']" :key="n">
-              <button class="btn w-100 " @click="clickNumero(n)" :disabled="ErroOuInvalido(resultado)">{{ n }}</button>
-            </div>
-            
-            <div class="col-3">
-              <button class="btn btn-sinais w-100 " @click="clickOperador('+')" :disabled="ErroOuInvalido(resultado)">+</button>
-            </div>
-
-            <div class="col-6 "><button class="btn w-100 btn-zero " @click="clickNumero(0)" :disabled="ErroOuInvalido(resultado)">0</button></div>
-            <div class="col-3"><button class="btn btn-sinais w-100 " @click="clickVirgula" :disabled="ErroOuInvalido(resultado)">,</button></div>
-            <div class="col-3"><button class="btn btn-sinais w-100 " @click="calcular" :disabled="ErroOuInvalido(resultado)">=</button></div>
-          </div>
-        </div>
+        <Botoes :-erro-ou-invalido="ErroOuInvalido" :calcular="calcular" 
+        :apagar-tudo="apagarTudo" 
+        :apagar-ultimo="apagarUltimo"
+        :click-numero="clickNumero"
+        :click-virgula="clickVirgula"
+        :click-operador="clickOperador"
+        :resultado="resultado"
+        />
       </div>
     </div>
   </div>
@@ -138,32 +112,6 @@ function calcular() {
   height: 100%;
 }
 
-.btn:hover {
-  background-color: #5a22d3;
-  transform: scale(1.1);
-}
-
-.btn {
-  color: #fff;
-  background-color: #1E2E49;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.btn-letra {
-  color: #d3ae08;
-}
-
-.bi-backspace {
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #d3ae08;
-}
-
-.btn-sinais {
-  background-color: #d3ae08;
-}
-
 .calculadora {
   background-image: linear-gradient(to bottom, #28166b 20%, #0c0720);
   font-family: "Rubik", sans-serif;
@@ -171,39 +119,5 @@ function calcular() {
   max-width: 280px;
   margin: 0 auto;
   padding: 20px;
-}
-
-.visor-operacao {
-  border: none;
-  background-color: transparent;
-  border: none;
-  background-color: transparent;
-  color: #fff;
-  font-size: 2rem;
-  min-height: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow-x: auto;
-  min-height: 250px;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  overflow-x: auto;
-}
-
-.visor-resultado {
-  color: #737eac;
-  font-size: 1.6rem;
-  font-size: 1.6rem;
-  margin-bottom: 150px;
-}
-
-.title {
-  color: #737eac;
-  font-size: 1.5rem;
-  margin-bottom: 40px;
 }
 </style>
